@@ -5,17 +5,18 @@ var sha1 = function (x) {
   sha1sum.update(x);
   return sha1sum.digest("hex");
 }
-
+var User;
 
 function handle (request, response) {
-  db.get("select * from usuarios where usuario = ? and password = ?", [request.body.username, sha1(request.body.password)], function (error, row) {
-    console.log (row);
-    if (row) {
-      request.session.usuario = row.usuario;
-      request.session.id = row.id;
-      request.session.nombre = row.nombre;
-      request.session.apellido = row.apellido;
-      response.send("Bienvenido/a " + row.nombre + " " + row.apellido);
+  console.log(User);
+  User.findByUsernamePassword(request.body.username, sha1(request.body.password), function(error, usuario) {
+    if (error) throw error;
+    if (usuario) {
+      request.session.usuario = usuario.usuario;
+      request.session.id = usuario.id;
+      request.session.nombre = usuario.nombre;
+      request.session.apellido = usuario.apellido;
+      response.send("Bienvenido/a " + usuario.nombre + " " + usuario.apellido);
     } else {
       response.send("Usuario o contraseña no existen. Intentelo nuevamente.");
     }
@@ -26,11 +27,14 @@ function showForm (request, response) {
   response.render("login");
 }
 
-
 module.exports = function(db_) {
   db = db_;
+  User = require("../models/user")(db);
+  console.log("Apenas lo seteo, user es ", User);
   return { 
     handle: handle,
     showForm: showForm
   }
 };
+
+
