@@ -21,23 +21,6 @@ app.get('/', function(request, response) {
   response.redirect('/login');
 });
 
-app.get('/login', function(request, response){
-  response.render("login");
-});
-
-/*
-app.get('/contador', function(request, response) {
-  if (request.cookies.veces !== undefined) {
-    var x = parseInt(request.cookies.veces) + 1;
-    response.cookie ("veces", x );
-    response.send ("Has entrado " + x + " veces.");
-  } else {
-    response.cookie ("veces", 1 );
-    response.send ("Has entrado 1 vez");
-  }
-});
-*/
-
 app.get('/contador', function(request, response) {
   if (request.session.veces !== undefined) {
     request.session.veces ++;
@@ -48,6 +31,8 @@ app.get('/contador', function(request, response) {
   }
 });
 
+
+app.get('/login', login.showForm);
 app.post('/login', login.handle);
 
 

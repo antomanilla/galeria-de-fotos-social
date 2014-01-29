@@ -22,9 +22,15 @@ function handle (request, response) {
   });
 }
 
+function showForm (request, response) {
+  response.render("login");
+}
+
+
 module.exports = function(db_) {
   db = db_;
   return { 
-    handle: handle
+    handle: handle,
+    showForm: showForm
   }
 };
