@@ -5,11 +5,11 @@ var sha1 = function (x) {
   sha1sum.update(x);
   return sha1sum.digest("hex");
 }
-var User;
+var Users;
 
 function handle (request, response) {
-  console.log(User);
-  User.findByUsernamePassword(request.body.username, sha1(request.body.password), function(error, usuario) {
+  console.log(Users);
+  Users.findByUsernamePassword(request.body.username, sha1(request.body.password), function(error, usuario) {
     if (error) throw error;
     if (usuario) {
       request.session.usuario = usuario.usuario;
@@ -29,8 +29,8 @@ function showForm (request, response) {
 
 module.exports = function(db_) {
   db = db_;
-  User = require("../models/user")(db);
-  console.log("Apenas lo seteo, user es ", User);
+  Users = require("../models/user")(db).Users;
+  console.log("Apenas lo seteo, user es ", Users);
   return { 
     handle: handle,
     showForm: showForm
