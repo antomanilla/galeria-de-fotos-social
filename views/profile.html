@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title> Profile </title>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/profile.css">
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse" role="navigation">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">MANIS</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">{{usuario}}</a></li>
+          <li><a href="#">Amigos</a></li>
+          <li><a href="#"><span class="glyphicon glyphicon-search"></span> Search</a></li>
+          <li><a href="#"><span class="glyphicon glyphicon-fire"></span> Popular</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/logout">Log Out</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+    <div class="container" style="height:600px;">
+      {{#each fotos}}
+      <div class="container_fotos">
+        <img class="user_image" src="/fotos/{{filename}}" alt="foto de usuario">
+        <p class="epigrafes"> {{epigrafe}} </p>
+      </div>
+      {{/each}} 
+    </div>
+
+
+  </body>
+
+</html>
+
+
+
+
+</nav>

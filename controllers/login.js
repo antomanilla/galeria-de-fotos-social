@@ -13,10 +13,10 @@ function handle (request, response) {
     if (error) throw error;
     if (usuario) {
       request.session.usuario = usuario.usuario;
-      request.session.id = usuario.id;
+      request.session.idusuario = usuario.id;
       request.session.nombre = usuario.nombre;
       request.session.apellido = usuario.apellido;
-      response.send("Bienvenido/a " + usuario.nombre + " " + usuario.apellido);
+      response.redirect('/profile');
     } else {
       response.send("Usuario o contraseña no existen. Intentelo nuevamente.");
     }
@@ -24,7 +24,11 @@ function handle (request, response) {
 }
 
 function showForm (request, response) {
-  response.render("login");
+  if (request.session.apellido !== undefined) {
+    response.redirect("/profile");
+  } else {
+    response.render("login");
+  }
 }
 
 module.exports = function(db_) {

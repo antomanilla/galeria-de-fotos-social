@@ -1,0 +1,16 @@
+.container_fotos {
+  width: 70%;
+  overflow: hidden;
+  height: 400px;
+  margin-bottom: 10%;
+}
+
+.user_image {
+  width: 100%;
+  margin-top: -10%;
+}
+
+.epigrafes {
+  float: right;
+
+}
