@@ -24,7 +24,22 @@ var Users = {
         callback (undefined, undefined);
       }
     });
-  } 
+  },
+  findByUsername: function (username, callback) {
+    db.get("select * from usuarios where usuario = ?", [username], function(error, row){
+      if (error) callback (error, undefined);
+      else if (row) {
+        var us = new User (row.id,
+                           row.usuario,
+                           row.password,
+                           row.nombre,
+                           row.apellido);
+        callback (undefined, us);
+      } else {
+        callback (undefined, undefined);
+      }
+    });
+  }
 };
 
 module.exports = function(db_) {

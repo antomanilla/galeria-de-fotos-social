@@ -1,4 +1,5 @@
 var Fotos;
+var Users;
 
 var profile = {
 
@@ -18,15 +19,20 @@ var profile = {
 
   showPublic: function (request, response) {
     console.log(request.params);
-    db.get("select id from usuarios where usuario = ?", [request.params.user], function(error, row){
-
-      Fotos.findByUserId(row.id, function (error, fotos){
-        var lista = [];
-        for (var i=0; i<fotos.length; i++) {
-          lista.push(fotos[i].filename);
-        }
-        response.send(lista.toString());
-      });
+    Users.findByUsername(request.params.user, function (error, user) {
+      if (error) throw error;
+      if (user) {
+        Fotos.findByUserId(user.id, function (error, fotos){
+          if (error) throw error;
+          var lista = [];
+          for (var i=0; i<fotos.length; i++) {
+            lista.push(fotos[i].filename);
+          }
+          response.send(lista.toString());
+        });
+      } else {
+        response.send("No existe el usuario " + request.params.user);
+      }
     });
   }
 };
@@ -35,5 +41,6 @@ var db;
 module.exports = function (db_) {
   db = db_;
   Fotos = require("../models/foto")(db).Fotos;
+  Users = require("../models/user")(db).Users;
   return profile;
 }
