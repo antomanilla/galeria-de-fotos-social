@@ -32,7 +32,12 @@
         </ul>
       </div><!-- /.navbar-collapse -->
     </nav>
-    <div class="container" style="height:600px;">
+    <div class="container" style="height:600px">
+      <form action="/profile" enctype="multipart/form-data" method="post">
+        <input type="file" name="f" placeholder="Agregar archivos" required>
+        <textarea name="epigrafe" placeholder="Epigrafe" required></textarea>
+        <input type="submit" value="Subir"> </input>
+      </form>
       {{#each fotos}}
       <div class="container_fotos">
         <img class="user_image" src="/fotos/{{filename}}" alt="foto de usuario">

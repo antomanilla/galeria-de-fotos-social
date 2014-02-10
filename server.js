@@ -14,7 +14,7 @@ app.use('/fotos', express.static(__dirname + '/fotos'));
 app.use(express.logger("dev"));
 app.use(express.cookieParser());
 app.use(express.session({'secret': "parrilla"}));
-app.use(express.bodyParser())
+app.use(express.bodyParser({uploadDir:'/tmp'}));
 
 
 app.set('view engine', 'html');
@@ -38,9 +38,10 @@ app.get('/contador', function(request, response) {
 
 app.get('/login', login.showForm);
 app.post('/login', login.handle);
+app.get('/logout', logout.logout);
 
 app.get('/profile', profile.showProfile);
-app.get('/logout', logout.logout);
+app.post('/profile', profile.upload);
 
 app.get('/publico/:user', profile.showPublic); 
 

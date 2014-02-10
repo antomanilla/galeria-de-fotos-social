@@ -33,3 +33,4 @@ module.exports = function(db_) {
     Foto: Foto
   };
 };
+
