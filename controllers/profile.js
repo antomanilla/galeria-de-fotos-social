@@ -39,20 +39,11 @@ var profile = {
   },
 
   upload: function (request, response) {
-    console.log(request.files);
-    Fotos.findByUserId(request.session.idusuario, function (error, fotos) {
-      var ext = path.extname(request.files.f.path);
-      var fileName = request.session.idusuario + "_" + (fotos.length + 1) + ext;
-      var epigrafe = request.body.epigrafe;
-      fs.readFile(request.files.f.path, function (error, data) {
-        var newPath = __dirname + "/.." + "/fotos/" + fileName;
-        console.log(newPath);
-        fs.writeFile(newPath, data, function (error) {
-          db.run("insert into fotos (idusuario, filename, epigrafe) values (?,?,?)",[request.session.idusuario, fileName, epigrafe], function (error) {
-            response.redirect("back");  
-          });
-        });
-      });
+    var foto = new Foto(request.session.idusuario,
+             request.files.f.path,
+             request.body.epigrafe);
+    fotos.addPhoto(foto, function(){
+      response.redirect("back");  
     });
   }
 };
