@@ -1,7 +1,6 @@
 var Fotos;
+var Foto;
 var Users;
-var fs = require("fs");
-var path = require("path");
 
 var profile = {
 
@@ -42,7 +41,7 @@ var profile = {
     var foto = new Foto(request.session.idusuario,
              request.files.f.path,
              request.body.epigrafe);
-    fotos.addPhoto(foto, function(){
+    Fotos.addPhoto(foto, function(){
       response.redirect("back");  
     });
   }
@@ -51,7 +50,9 @@ var db;
 
 module.exports = function (db_) {
   db = db_;
-  Fotos = require("../models/foto")(db).Fotos;
+  var fotos = require("../models/foto")(db);
+  Foto = fotos.Foto;
+  Fotos = fotos.Fotos;
   Users = require("../models/user")(db).Users;
   return profile;
 }

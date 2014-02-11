@@ -1,4 +1,7 @@
 var db;
+var path = require("path");
+var fs = require("fs");
+
 
 function Foto(idusuario, filename, epigrafe, idfoto) {
   this.idusuario = idusuario;
