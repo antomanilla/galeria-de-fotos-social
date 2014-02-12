@@ -19,7 +19,6 @@ var profile = {
   },
 
   showPublic: function (request, response) {
-    console.log(request.params);
     Users.findByUsername(request.params.user, function (error, user) {
       if (error) throw error;
       if (user) {

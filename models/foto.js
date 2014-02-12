@@ -62,7 +62,36 @@ fotos de la base de datos para este usuario */
         });
       });
     });
+  },
 
+/* Fotos.getByHashtag toma un hashtag y llama a un callback con un posible error
+y un array de las fotos que contengan ese hashtag*/
+  getByHashtag: function(hashtag, callback) {
+    db.all("select fotos.filename, fotos.idfoto, fotos.idusuario, fotos.epigrafe " +
+            "from fotos, fotohash, hashtags " +
+            "where hashtags.idhash = fotohash.idhash and fotohash.idfoto = fotos.idfoto " + 
+            "and hashtags.hashtag = ?", [hashtag], function (error, rows) {
+      var fotos = [];
+      var semaphore = rows.length;
+      for (var i = 0; i < rows.length; i++) {
+        fotos.push(new Foto(rows[i].idusuario, rows[i].filename, rows[i].epigrafe, 
+                              rows[i].idfoto));
+        Hashtags.getByFotoId(fotos[i].idfoto, (function(i_) {
+          return function(error, hashtags) {
+            fotos[i_].hashtags = hashtags;
+            semaphore--;
+            if (semaphore == 0) {
+              if (error) callback(error);
+              else if (fotos){
+                callback (undefined, fotos);
+              } else {
+                callback (undefined, undefined);
+              }
+            }
+          };
+        })(i));
+      }
+    });
   }
 
 };

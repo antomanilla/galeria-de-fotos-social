@@ -6,6 +6,7 @@ var db = new sqlite.Database("galeria.db");
 var login = require('./controllers/login')(db);
 var profile = require('./controllers/profile')(db);
 var logout = require('./controllers/logout');
+var search = require('./controllers/search')(db);
 
 
 
@@ -43,6 +44,7 @@ app.get('/logout', logout.logout);
 app.get('/profile', profile.showProfile);
 app.post('/profile', profile.upload);
 
-app.get('/publico/:user', profile.showPublic); 
+app.get('/publico/:user', profile.showPublic);
+app.get('/hashtags', search.showResults); 
 
 app.listen(3000);

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title> Profile </title>
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/profile.css">
+    <link rel="stylesheet" href="/css/search_results.css">
   </head>
   <body>
     <nav class="navbar navbar-inverse" role="navigation">
@@ -41,11 +41,6 @@
       </div><!-- /.navbar-collapse -->
     </nav>
     <div class="container" style="height:600px">
-      <form action="/profile" enctype="multipart/form-data" method="post">
-        <input type="file" name="f" placeholder="Agregar archivos" required>
-        <textarea name="epigrafe" placeholder="Epigrafe" required></textarea>
-        <input type="submit" value="Subir"> </input>
-      </form>
       {{#each fotos}}
       <div class="container_fotos">
         <img class="user_image" src="/fotos/{{filename}}" alt="foto de usuario">
