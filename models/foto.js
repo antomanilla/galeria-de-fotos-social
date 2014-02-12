@@ -43,7 +43,7 @@ un posible error y un array de objetos del tipo Foto. [{},{},{}] */
     });
   },
 
-/*Fotos.addPhoto() toma un objeto User, un objeto Foto y un callback. Llama al callback con 
+/*Fotos.addPhoto() toma un objeto Foto y un callback. Llama al callback con 
 un posible error. Mueve la foto al directorio fotos y agrega la foto a la tabla
 fotos de la base de datos para este usuario */
   addPhoto: function(foto, callback) {
