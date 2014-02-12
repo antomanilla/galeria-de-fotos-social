@@ -1,14 +1,15 @@
 var db;
 var path = require("path");
 var fs = require("fs");
+var Hashtags;
 
 
-function Foto(idusuario, filename, epigrafe, idfoto) {
+function Foto(idusuario, filename, epigrafe, idfoto, hashtags) {
   this.idusuario = idusuario;
   this.filename = filename;
   this.epigrafe = epigrafe;
   this.idfoto = idfoto;
-  
+  this.hashtags = hashtags || [];
 };
 
 
@@ -19,14 +20,33 @@ un posible error y un array de objetos del tipo Foto. [{},{},{}] */
     var sql = 'select filename, epigrafe, idfoto from fotos where idusuario = ?';
     db.all(sql, idusuario, function(error, rows) {
       var fotos = [];
+      console.log("antes del for fotos vale ", fotos);
+      var semaphore = rows.length;
       for (var i=0; i<rows.length; i++) {
         fotos[i] = new Foto(idusuario, rows[i].filename, rows[i].epigrafe, rows[i].idfoto); 
-      }
-      if (error) callback(error);
-      else if (rows){
-        callback (undefined, fotos);
-      } else {
-        callback (undefined, undefined);
+        console.log("dentro del for fotos vale ", fotos);
+        // aca quiero llenar los hashtags de fotos[i]
+        // quiero que fotos[i].hashtags sean los hashtags de esta foto
+        Hashtags.getByFotoId(fotos[i].idfoto, (function(i_) {
+          return function(error, hashtags) {
+            console.log("\tencontro los hashtag de la foto[i]. fotos vale ", fotos);
+            console.log("i_ vale " + i_);
+            fotos[i_].hashtags = hashtags;
+            semaphore--;
+            console.log("\tsemaphore es:", semaphore);
+            if (semaphore == 0) {
+              console.log("\t\tsemaphore es 0, error = ", error);
+              console.log("\t\tfotos = ", fotos);
+              if (error) callback(error);
+              else if (fotos){
+                console.log("encontro rows. fotos vale ", fotos);
+                callback (undefined, fotos);
+              } else {
+                callback (undefined, undefined);
+              }
+            }
+          };
+        })(i));
       }
     });
   },
@@ -57,6 +77,7 @@ fotos de la base de datos para este usuario */
 
 module.exports = function(db_) {
   db = db_;
+  Hashtags = require ("./hashtag")(db);
   return {
     Fotos: Fotos,
     Foto: Foto
