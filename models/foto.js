@@ -71,6 +71,7 @@ y un array de las fotos que contengan ese hashtag*/
             "from fotos, fotohash, hashtags " +
             "where hashtags.idhash = fotohash.idhash and fotohash.idfoto = fotos.idfoto " + 
             "and hashtags.hashtag = ?", [hashtag], function (error, rows) {
+      if (rows.length == 0) return callback(error, undefined);
       var fotos = [];
       var semaphore = rows.length;
       for (var i = 0; i < rows.length; i++) {

@@ -3,12 +3,17 @@ var db;
 
 var search = {
   showResults: function(request, response) {
-    Fotos.getByHashtag(request.query.search_hash, function (error, fotos) {
-     var data = { 
-        fotos: fotos
-      };
-      response.render("search_results", data);
-    })
+    if (request.session.nombre == undefined) {
+      response.redirect("/login");
+    } else {
+      Fotos.getByHashtag(request.query.search_hash, function (error, fotos) {
+       var data = { 
+          usuario: request.session.nombre + " " + request.session.apellido,
+          fotos: fotos
+        };
+        response.render("search_results", data);
+      });
+    }
   }
 }
 
