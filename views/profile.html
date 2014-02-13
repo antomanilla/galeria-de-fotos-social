@@ -22,8 +22,10 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
+          {{#if usuario}}
           <li class="active"><a href="#">{{usuario}}</a></li>
           <li><a href="#">Amigos</a></li>
+          {{/if}}
           <li><a href="#"><span class="glyphicon glyphicon-search"></span> Search</a></li>
           <li>
             <form class="navbar-form navbar-left" action="/hashtags" method="get" role="search">
@@ -35,17 +37,21 @@
           </li>
           <li><a href="#"><span class="glyphicon glyphicon-fire"></span> Popular</a></li>
         </ul>
+        {{#if usuario}}
         <ul class="nav navbar-nav navbar-right">
           <li><a href="/logout">Log Out</a></li>
         </ul>
+        {{/if}}
       </div><!-- /.navbar-collapse -->
     </nav>
     <div class="container" style="height:600px">
+      {{#if isYou}}
       <form action="/profile" enctype="multipart/form-data" method="post">
         <input type="file" name="f" placeholder="Agregar archivos" required>
         <textarea name="epigrafe" placeholder="Epigrafe" required></textarea>
         <input type="submit" value="Subir"> </input>
       </form>
+      {{/if}}
       {{#each fotos}}
       <div class="container_fotos">
         <img class="user_image" src="/fotos/{{filename}}" alt="foto de usuario">

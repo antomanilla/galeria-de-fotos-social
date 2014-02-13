@@ -9,9 +9,11 @@ var profile = {
       response.redirect("/login");
     } else {
       Fotos.findByUserId(request.session.idusuario, function (error, fotos){
+        if (error) throw error;
         var data = { 
           usuario: request.session.nombre + " " + request.session.apellido,
-          fotos: fotos
+          fotos: fotos,
+          isYou: true
         };
         response.render("profile", data);
       });
@@ -24,11 +26,17 @@ var profile = {
       if (user) {
         Fotos.findByUserId(user.id, function (error, fotos){
           if (error) throw error;
-          var lista = [];
-          for (var i=0; i<fotos.length; i++) {
-            lista.push(fotos[i].filename);
+          if (request.session.nombre) {
+            var data = { 
+              fotos: fotos,
+              usuario: request.session.nombre + " " + request.session.apellido,
+            };
+          } else {
+            var data = { 
+              fotos: fotos,
+            };
           }
-          response.send(lista.toString());
+          response.render("profile", data);
         });
       } else {
         response.send("No existe el usuario " + request.params.user);
