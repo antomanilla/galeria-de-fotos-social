@@ -8,8 +8,8 @@ var search = {
       response.redirect("/login");
     } else {
         Fotos.getByHashtag(request.query.search_hash, function (error, fotos) {
-        /* fotos es un array de objetos Foto, quiero recorrer el array y 
-        por cada posicion pushearle una propiedad autor que saco corriendo User.findById( ) 
+        /* fotos es un array de objetos Foto, quiero recorrer el aarray y 
+        por cada posicion agregarle una propiedad autor que saco corriendo User.findById( ) 
         pasandole como parametro id: fotos[i].idusuario, en cada posicion. */
 
         var semaphore = fotos.length;
@@ -23,7 +23,6 @@ var search = {
                   usuario: request.session.nombre + " " + request.session.apellido,
                   fotos: fotos
                 };
-                console.log("fotos es ", fotos); 
                 response.render("search_results", data);
               }
             } 
