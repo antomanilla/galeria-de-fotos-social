@@ -39,6 +39,21 @@ var Users = {
         callback (undefined, undefined);
       }
     });
+  },
+  findById: function (userid, callback) {
+    db.get("select * from usuarios where id = ?", [userid], function(error, row){
+      if (error) callback (error, undefined);
+      else if (row) {
+        var u = new User (row.id,
+                          row.usuario,
+                          row.password,
+                          row.nombre,
+                          row.apellido);
+        callback (undefined, u); 
+      } else {
+        callback (undefined, undefined);
+      }
+    });
   }
 };
 
