@@ -7,26 +7,32 @@ var search = {
     if (request.session.nombre == undefined) {
       response.redirect("/login");
     } else {
-        Fotos.getByHashtag(request.query.search_hash, function (error, fotos) {
+      Fotos.getByHashtag(request.query.search_hash, function (error, fotos) {
         /* fotos es un array de objetos Foto, quiero recorrer el aarray y 
         por cada posicion agregarle una propiedad autor que saco corriendo User.findById( ) 
         pasandole como parametro id: fotos[i].idusuario, en cada posicion. */
-
-        var semaphore = fotos.length;
-        for (var i = 0; i < fotos.length; i++) {
-          Users.findById(fotos[i].idusuario, function (_i) {
-            return function (error, u){
-              fotos[_i].autor = u.usuario;
-              semaphore --; 
-              if (semaphore == 0) {
-                var data = { 
-                  usuario: request.session.nombre + " " + request.session.apellido,
-                  fotos: fotos
-                };
-                response.render("search_results", data);
-              }
-            } 
-          }(i)); 
+        function sendResponse () {
+          var data = { 
+            usuario: request.session.nombre + " " + request.session.apellido,
+            fotos: fotos
+          };
+          response.render("search_results", data);
+        }
+        if (fotos.length == 0) {
+          sendResponse();
+        } else {
+          var semaphore = fotos.length;
+          for (var i = 0; i < fotos.length; i++) {
+            Users.findById(fotos[i].idusuario, function (_i) {
+              return function (error, u){
+                fotos[_i].autor = u.usuario;
+                semaphore --; 
+                if (semaphore == 0) {
+                  sendResponse();
+                }
+              } 
+            }(i)); 
+          }
         }
       });
     }
