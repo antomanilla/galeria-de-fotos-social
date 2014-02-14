@@ -10,12 +10,16 @@ var profile = {
     } else {
       Fotos.findByUserId(request.session.idusuario, function (error, fotos){
         if (error) throw error;
-        var data = { 
-          usuario: request.session.nombre + " " + request.session.apellido,
-          fotos: fotos,
-          isYou: true
-        };
-        response.render("profile", data);
+        Users.findFriends(request.session.idusuario, function(error, friends){
+          if (error) throw error;
+          var data = { 
+            usuario: request.session.nombre + " " + request.session.apellido,
+            fotos: fotos,
+            isYou: true,
+            amistades: friends
+          };
+          response.render("profile", data);
+        });
       });
     }
   },

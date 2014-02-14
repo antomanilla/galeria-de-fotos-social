@@ -54,6 +54,21 @@ var Users = {
         callback (undefined, undefined);
       }
     });
+  },
+  /* findFriends quiero que busque el id de todos los amigos del usuario que 
+  le paso como parametro y me los devuelva en un array de objetos del tipo User */
+  findFriends: function (userid, callback) {
+    db.all("select usuarios.id, usuarios.usuario, usuarios.password, usuarios.nombre, usuarios.apellido " +
+           "from usuarios, amistades " +
+           "where amistades.idamigo = usuarios.id and amistades.idusuario = ?", 
+           [userid], function (error, rows){
+      var friends = [];
+      if (error) return callback (error, undefined);
+      for (var i=0; i<rows.length; i++) {
+          friends[i] = new User(rows[i].id, rows[i].usuario, rows[i].password, rows[i].nombre, rows[i].apellido); 
+      } 
+      callback(undefined, friends);
+    });
   }
 };
 
