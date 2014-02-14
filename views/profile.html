@@ -51,7 +51,13 @@
         <textarea name="epigrafe" placeholder="Epigrafe" required></textarea>
         <input type="submit" value="Subir"> </input>
       </form>
-      {{/if}}
+      {{/if}} 
+      {{#unless following}}
+      <form action="/follow" method="post">
+        <input type="hidden" value="{{userid}}" name="usuario_a_seguir" />
+        <button type="submit" name="follow" class="btn btn-default"> Seguir a este usuario </button>
+      </form>
+      {{/unless}}
       {{#each fotos}}
       <div class="container_fotos">
         <img class="user_image" src="/fotos/{{filename}}" alt="foto de usuario">
@@ -59,9 +65,9 @@
         {{#each hashtags}} <p class="hashtags"> {{hashtag}} </p> {{/each}}
       </div>
       {{/each}}
-      <div class="amistades">
+      <div class="following">
         <ul>
-          {{#each amistades}}
+          {{#each followees}}
             <li> <a href="/publico/{{usuario}}">{{nombre}} {{apellido}} </a> </li>
           {{/each}}
         </ul>

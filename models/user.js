@@ -25,6 +25,8 @@ var Users = {
       }
     });
   },
+  /* findByUsername toma un username, arma un objeto User para ese usuario
+  y llama al callback pasandolo como parametro */
   findByUsername: function (username, callback) {
     db.get("select * from usuarios where usuario = ?", [username], function(error, row){
       if (error) callback (error, undefined);
@@ -55,9 +57,9 @@ var Users = {
       }
     });
   },
-  /* findFriends quiero que busque el id de todos los amigos del usuario que 
+  /* findFollowing quiero que busque el id de todos los amigos del usuario que 
   le paso como parametro y me los devuelva en un array de objetos del tipo User */
-  findFriends: function (userid, callback) {
+  findFollowing: function (userid, callback) {
     db.all("select usuarios.id, usuarios.usuario, usuarios.password, usuarios.nombre, usuarios.apellido " +
            "from usuarios, amistades " +
            "where amistades.idamigo = usuarios.id and amistades.idusuario = ?", 
@@ -67,7 +69,27 @@ var Users = {
       for (var i=0; i<rows.length; i++) {
           friends[i] = new User(rows[i].id, rows[i].usuario, rows[i].password, rows[i].nombre, rows[i].apellido); 
       } 
+      console.log("amigos: ", friends);
       callback(undefined, friends);
+    });
+  },
+  follow: function (userid1, userid2,  callback) {
+    db.run("insert into amistades (idusuario, idamigo) values (?,?)",
+          [userid1, userid2],
+          callback);
+  },
+  /* isFollowing recibe dos userids y si el primero sigue al segundo
+  llama al callback con true como parametro, sino false */
+  isFollowing: function(userid1, userid2, callback) {
+    console.log("isFollowing(", userid1, ", ", userid2, ")");
+    Users.findFollowing(userid1, function(error, friends){
+      if (error) return callback(error);
+      for (var i=0; i<friends.length; i++) {
+        if (friends[i].id == userid2) {
+          return callback(true);
+        } 
+      }
+      callback(false);      
     });
   }
 };

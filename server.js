@@ -7,6 +7,7 @@ var login = require('./controllers/login')(db);
 var profile = require('./controllers/profile')(db);
 var logout = require('./controllers/logout');
 var search = require('./controllers/search')(db);
+var follow = require('./controllers/follow')(db);
 
 
 
@@ -46,5 +47,7 @@ app.post('/profile', profile.upload);
 
 app.get('/publico/:user', profile.showPublic);
 app.get('/hashtags', search.showResults); 
+
+app.post('/follow', follow.startFollowing);
 
 app.listen(3000);

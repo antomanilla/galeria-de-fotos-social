@@ -10,13 +10,14 @@ var profile = {
     } else {
       Fotos.findByUserId(request.session.idusuario, function (error, fotos){
         if (error) throw error;
-        Users.findFriends(request.session.idusuario, function(error, friends){
+        Users.findFollowing(request.session.idusuario, function(error, friends){
           if (error) throw error;
           var data = { 
             usuario: request.session.nombre + " " + request.session.apellido,
             fotos: fotos,
             isYou: true,
-            amistades: friends
+            followees: friends,
+            following: true
           };
           response.render("profile", data);
         });
@@ -31,16 +32,32 @@ var profile = {
         Fotos.findByUserId(user.id, function (error, fotos){
           if (error) throw error;
           if (request.session.nombre) {
-            var data = { 
-              fotos: fotos,
-              usuario: request.session.nombre + " " + request.session.apellido,
-            };
+            /* si estoy logueada */
+            Users.isFollowing(request.session.idusuario, user.id, function(isfollowing){
+              console.log("is fo valeeeeeeeeeee", isfollowing);
+              if (isfollowing) {
+                var data = { 
+                  fotos: fotos,
+                  usuario: request.session.nombre + " " + request.session.apellido,
+                  userid: user.id,
+                  following: true
+                }
+              } else {
+                var data = { 
+                fotos: fotos,
+                usuario: request.session.nombre + " " + request.session.apellido,
+                userid: user.id
+                }
+              }  response.render("profile", data);           
+            });
           } else {
+            //si no estoy logueada
             var data = { 
               fotos: fotos,
             };
+            response.render("profile", data);
           }
-          response.render("profile", data);
+          
         });
       } else {
         response.send("No existe el usuario " + request.params.user);
