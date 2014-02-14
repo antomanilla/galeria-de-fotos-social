@@ -26,7 +26,7 @@ var Users = {
     });
   },
   /* findByUsername toma un username, arma un objeto User para ese usuario
-  y llama al callback pasandolo como parametro */
+  y llama al callback pasandolo como parametro, si no existe pasa undefined */
   findByUsername: function (username, callback) {
     db.get("select * from usuarios where usuario = ?", [username], function(error, row){
       if (error) callback (error, undefined);
@@ -81,7 +81,6 @@ var Users = {
   /* isFollowing recibe dos userids y si el primero sigue al segundo
   llama al callback con true como parametro, sino false */
   isFollowing: function(userid1, userid2, callback) {
-    console.log("isFollowing(", userid1, ", ", userid2, ")");
     Users.findFollowing(userid1, function(error, friends){
       if (error) return callback(error);
       for (var i=0; i<friends.length; i++) {
@@ -91,7 +90,17 @@ var Users = {
       }
       callback(false);      
     });
-  }
+  },
+  signup: function (username, password, nombre, apellido, callback) {
+    Users.findByUsername (username, function (error, user){
+      if (!user) {
+        db.run("insert into usuarios (usuario, password, nombre, apellido) values (?,?,?,?)",
+               [username, password, nombre, apellido], callback );               
+      } else {
+        callback("error");
+      }
+    });
+  } 
 };
 
 module.exports = function(db_) {

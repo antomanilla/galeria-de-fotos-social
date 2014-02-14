@@ -8,7 +8,26 @@ var sha1 = function (x) {
 var Users;
 
 function handle (request, response) {
-  console.log(Users);
+  if (request.body.accion == "signin") {
+    signin(request, response);
+  } else {
+    signup(request, response);
+  }  
+}
+
+function signup (request, response) {
+  Users.signup(request.body.username, sha1(request.body.password), request.body.nombre, 
+               request.body.apellido, function(error){
+    if (error) {
+      response.send("Usuario ya existe. Por favor elija otro nombre de usuario.");
+    } else {
+      signin(request, response);
+    } 
+  });
+
+}
+
+function signin (request, response) {
   Users.findByUsernamePassword(request.body.username, sha1(request.body.password), function(error, usuario) {
     if (error) throw error;
     if (usuario) {

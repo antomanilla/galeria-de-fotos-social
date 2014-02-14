@@ -18,12 +18,35 @@
              <label for="pass">Password</label>
              <input type="password" name="password" class="form-control" id="pass" placeholder="Password">
           </div>
+          <div id="ocultos">
+            <div class="form-group">
+             <label for="nombre">Nombre: </label> 
+             <input type="text" name="nombre" class="form-control" id="nombre" placeholder="Ingresar nombre">
+            </div>
+            <div class="form-group">
+             <label for="apellido">Apellido: </label> 
+             <input type="text" name="apellido" class="form-control" id="apellido" placeholder="Ingresar apellido">
+            </div>
+          </div>
           <p>
-            <button type="submit" class="btn btn-primary btn-lg">Sign in</button>
-            <button type="submit" class="btn btn-default btn-lg">Sign up</button>
+            <button name="accion" value="signin" type="button" class="btn btn-primary btn-lg">Sign in</button>
+            <button id="signup_button" name="accion" value="signup" type="button" class="btn btn-default btn-lg">Sign up</button>
           </p>
         </form>
       </div>
     </div>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+    $(function() {
+      $('#signup_button').click(function(e) {
+        if ($('#ocultos').css('display') == 'block') {
+          $('form').submit();
+        } else {
+          $('#ocultos').slideDown();
+          e.preventDefault();
+        }
+      });
+    });
+    </script>
   </body>
 </html>
