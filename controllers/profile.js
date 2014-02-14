@@ -34,21 +34,15 @@ var profile = {
           if (request.session.nombre) {
             /* si estoy logueada */
             Users.isFollowing(request.session.idusuario, user.id, function(isfollowing){
-              console.log("is fo valeeeeeeeeeee", isfollowing);
-              if (isfollowing) {
-                var data = { 
+              var data = { 
                   fotos: fotos,
                   usuario: request.session.nombre + " " + request.session.apellido,
-                  userid: user.id,
-                  following: true
-                }
-              } else {
-                var data = { 
-                fotos: fotos,
-                usuario: request.session.nombre + " " + request.session.apellido,
-                userid: user.id
-                }
-              }  response.render("profile", data);           
+                  userid: user.id
+              }
+              if (isfollowing) {
+                data.following = true;
+              }
+              response.render("profile", data);           
             });
           } else {
             //si no estoy logueada
@@ -57,7 +51,6 @@ var profile = {
             };
             response.render("profile", data);
           }
-          
         });
       } else {
         response.send("No existe el usuario " + request.params.user);
