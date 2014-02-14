@@ -21,6 +21,7 @@ un posible error y un array de objetos del tipo Foto. [{},{},{}] */
     db.all(sql, idusuario, function(error, rows) {
       var fotos = [];
       var semaphore = rows.length;
+      if (!rows.length) return callback(undefined, fotos);
       for (var i=0; i<rows.length; i++) {
         fotos[i] = new Foto(idusuario, rows[i].filename, rows[i].epigrafe, rows[i].idfoto); 
         // aca quiero llenar los hashtags de fotos[i]
@@ -30,12 +31,8 @@ un posible error y un array de objetos del tipo Foto. [{},{},{}] */
             fotos[i_].hashtags = hashtags;
             semaphore--;
             if (semaphore == 0) {
-              if (error) callback(error);
-              else if (fotos){
-                callback (undefined, fotos);
-              } else {
-                callback (undefined, undefined);
-              }
+              if (error) return callback(error);
+              callback (undefined, fotos);
             }
           };
         })(i));
