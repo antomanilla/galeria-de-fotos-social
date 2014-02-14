@@ -89,7 +89,6 @@ y un array de las fotos que contengan ese hashtag*/
       }
     });
   }
-
 };
 
 module.exports = function(db_) {
