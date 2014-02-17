@@ -65,8 +65,13 @@ var profile = {
     var foto = new Foto(request.session.idusuario,
              request.files.f.path,
              request.body.epigrafe);
-    Fotos.addPhoto(foto, function(){
-      response.redirect("back");  
+    Fotos.addPhoto(foto, function(error, idfoto){
+      if (error) {
+        return response.send("No se pudo insertar la foto");
+      }
+      Hashtags.add(request.body.hashtag, idfoto, function () {
+        response.redirect("back");  
+      });
     });
   },
 
@@ -99,6 +104,7 @@ var db;
 module.exports = function (db_) {
   db = db_;
   var fotos = require("../models/foto")(db);
+  Hashtags = require("../models/hashtag")(db);
   Foto = fotos.Foto;
   Fotos = fotos.Fotos;
   Users = require("../models/user")(db).Users;

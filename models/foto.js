@@ -54,7 +54,11 @@ fotos de la base de datos para este usuario */
           db.run("insert into fotos (idusuario, filename, epigrafe) values (?,?,?)",
                  [foto.idusuario, finalFileName, epigrafe],
                  function (error) {
-            callback(error);
+            db.get("select idfoto from fotos where filename = ?", [finalFileName],
+                   function(error, row){
+              if (error) return callback(error);
+              callback(undefined, row.idfoto);
+            });
           });
         });
       });
