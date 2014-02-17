@@ -17,7 +17,8 @@ var profile = {
             fotos: fotos,
             isYou: true,
             followees: friends,
-            following: true
+            following: true,
+            partials: { user_nav: "user_nav" }
           };
           response.render("profile", data);
         });
@@ -37,7 +38,8 @@ var profile = {
               var data = { 
                   fotos: fotos,
                   usuario: request.session.nombre + " " + request.session.apellido,
-                  userid: user.id
+                  userid: user.id,
+                  partials: { user_nav: "user_nav" }
               }
               if (isfollowing) {
                 data.following = true;
@@ -48,6 +50,7 @@ var profile = {
             //si no estoy logueada
             var data = { 
               fotos: fotos,
+              partials: { user_nav: "user_nav" }
             };
             response.render("profile", data);
           }

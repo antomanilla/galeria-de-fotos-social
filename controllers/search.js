@@ -14,7 +14,8 @@ var search = {
         function sendResponse () {
           var data = { 
             usuario: request.session.nombre + " " + request.session.apellido,
-            fotos: fotos
+            fotos: fotos,
+            partials: { user_nav: "user_nav" }
           };
           response.render("search_results", data);
         }
