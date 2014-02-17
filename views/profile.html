@@ -29,7 +29,7 @@
       <div class="container_fotos" data-idfoto="{{idfoto}}">
         <div class="foto"> <img class="user_image" src="/fotos/{{filename}}" alt="foto de usuario"> </div>
         <p class="epigrafes"> {{epigrafe}} </p>
-        {{#each hashtags}} <p class="hashtags"> #{{hashtag}} </p> {{/each}}
+        {{#each hashtags}} <p class="hashtags"> <a href="/hashtags?search_hash={{hashtag}}">#{{hashtag}} </a></p> {{/each}}
         {{#if ../isYou}}
         <div class="remove"><span class="glyphicon glyphicon-remove removebtn"></span></div>
         {{/if}} 
