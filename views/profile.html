@@ -26,10 +26,13 @@
       </form>
       {{/unless}}
       {{#each fotos}}
-      <div class="container_fotos">
-        <img class="user_image" src="/fotos/{{filename}}" alt="foto de usuario">
+      <div class="container_fotos" data-idfoto="{{idfoto}}">
+        <div class="foto"> <img class="user_image" src="/fotos/{{filename}}" alt="foto de usuario"> </div>
         <p class="epigrafes"> {{epigrafe}} </p>
-        {{#each hashtags}} <p class="hashtags"> {{hashtag}} </p> {{/each}}
+        {{#each hashtags}} <p class="hashtags"> #{{hashtag}} </p> {{/each}}
+        {{#if ../isYou}}
+        <div class="remove"><span class="glyphicon glyphicon-remove removebtn"></span></div>
+        {{/if}} 
       </div>
       {{/each}}
       <div class="following">
@@ -40,7 +43,28 @@
         </ul>
       </div> 
     </div>
-
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script> 
+      $(function() {
+        $('.removebtn').click(function(){
+          var parent = $(this).parents('.container_fotos');
+          var idfoto = parent.data("idfoto");
+          $.ajax({
+            type: "POST",
+            url: "/remove_photo",
+            data: {idfoto: idfoto}
+          }).done(function(msg) {
+            if(msg == "Ok") {
+              parent.fadeOut("fast", function(){
+                parent.remove();
+              });
+            } else {
+              alert("La foto no pudo ser eliminada.");
+            }
+          });
+        });
+      });
+    </script>
   </body>
 
 

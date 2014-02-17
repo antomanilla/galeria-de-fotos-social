@@ -1,16 +1,26 @@
 .container_fotos {
   width: 70%;
-  overflow: hidden;
-  height: 400px;
-  margin-bottom: 10%;
+  margin-bottom: 5%;
+  border: 1px solid #aaa;
+  padding: 10px;
 }
 
 .user_image {
   width: 100%;
-  margin-top: -10%;
+/* margin-top: -10%; */ 
+
+}
+
+.foto {
+  height: 400px;
+  overflow: hidden;
+
 }
 
 .epigrafes {
-  float: right;
 
+}
+
+.removebtn {
+  cursor: pointer;
 }

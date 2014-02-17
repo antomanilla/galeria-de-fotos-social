@@ -68,8 +68,32 @@ var profile = {
     Fotos.addPhoto(foto, function(){
       response.redirect("back");  
     });
+  },
+
+  /* Profile.removePhoto, chequea que la foto que esta pidiendo ser removida
+  pertenezca al mismo usuario que esta logueado. Siendo asi, llama a Fotos.remove
+  para que elimine la foto de la db. responde al browser si todo salio bien. */
+  removePhoto: function (request, response) {
+    var idfoto = request.body.idfoto;
+    Fotos.findByUserId(request.session.idusuario, function(error, photos) {
+      if (error) return response.send ("Error: " + error.toString());
+      for (var i = 0; i < photos.length; ++i) {
+        if (photos[i].idfoto == idfoto) {
+          Fotos.remove(idfoto, function(error) {
+            if (error) {
+              response.send("Error: " + error.toString());
+            } else {
+              response.send("Ok");
+            }
+          });
+          return;
+        }
+      }
+      response.send("Access denied.");
+    });
   }
 };
+
 var db;
 
 module.exports = function (db_) {

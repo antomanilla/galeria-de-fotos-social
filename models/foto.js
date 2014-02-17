@@ -88,6 +88,14 @@ y un array de las fotos que contengan ese hashtag*/
         })(i));
       }
     });
+  },
+  /* Fotos.remove elimina la row de esta foto de la tabla fotos y todas sus rows de la 
+  tabla fotohash y llamo a callback pasandole un posible error*/
+  remove: function(idfoto, callback) {
+    db.run("delete from fotos where idfoto = ?", [idfoto], function(error){
+      if (error) return callback(error);
+      db.run("delete from fotohash where idfoto = ?",[idfoto], callback);
+    });
   }
 };
 

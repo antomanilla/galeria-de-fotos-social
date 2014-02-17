@@ -42,6 +42,7 @@ app.get('/login', login.showForm);
 app.post('/login', login.handle);
 app.get('/logout', logout.logout);
 
+
 app.get('/profile', profile.showProfile);
 app.post('/profile', profile.upload);
 
@@ -49,5 +50,7 @@ app.get('/publico/:user', profile.showPublic);
 app.get('/hashtags', search.showResults); 
 
 app.post('/follow', follow.startFollowing);
+console.log(profile);
+app.post('/remove_photo', profile.removePhoto);
 
 app.listen(3000);
